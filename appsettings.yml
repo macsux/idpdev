@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: idpdev
+  cloud:
+    config:
+#      uri: http://localhost:8888
+      validate_certificates: false
+
