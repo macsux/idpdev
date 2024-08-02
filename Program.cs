@@ -9,6 +9,8 @@ using IdentityServer4.Services;
 using IdentityServer4.Validation;
 using IdentityServerDemo;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Steeltoe.Extensions.Configuration.ConfigServer;
@@ -26,8 +28,10 @@ Log.Logger = new LoggerConfiguration()
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddSerilog();
 builder.Configuration
-    .AddYamlFile("appsettings.yml")
-    .AddYamlFile("config-repo/identityserver.yml");
+    .AddYamlFile("appsettings.yml");
+
+var authConfigFile = Environment.GetEnvironmentVariable("AUTH_CONFIG_FILE");
+builder.Configuration.AddYamlFile(authConfigFile ?? "config-repo/identityserver.yml");
 
 if (builder.Configuration.GetValue<string>("spring:cloud:config:uri") != null)
 {
@@ -78,7 +82,7 @@ try
 {
     Log.Information("Starting host...");
     var app = builder.Build();
-    
+
     app.UseDeveloperExceptionPage();
     app.UseIdentityServer();
     app.UseStaticFiles();

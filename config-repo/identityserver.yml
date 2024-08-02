@@ -1,4 +1,5 @@
 security:
+  # clients represent apps that can request tokens from identity server using allowed flows (grant types)
   clients:
     - clientId: "gui"
       allowedGrantTypes:
@@ -11,16 +12,13 @@ security:
       redirectUris:
         - http://localhost:8080/login/oauth2/code/local-client
         - https://localhost:5011/signin-oidc
-        - https://local-vr2-sada.login.sys.uat.cf.az.cihs.gov.on.ca/login/callback/devidp
-        - https://pivot-astakhov.login.run.pcfone.io/login/callback/devidp
-        - https://astakhov.login.run.pivotal.io/login/callback/devidp
       allowedScopes: # scopes that app can request
         - api1.read
         - openid
       requireConsent: false # is the user prompted for concept are scopes autogranted
       clientSecrets:
         - value: password
-  apiResources:
+  apiResources: # resources are protected resources, like APIs
     - name: "api1"
       displayName: "my Api"
       scopes:
@@ -29,12 +27,10 @@ security:
       displayName: "another api"
       scopes:
         - name: api2.read
-  apiScopes:
-    - name: api.read
-  users:
-    - subjectId: andrew
-      username: andrew
-      password: 1
-    - subjectId: andrew
-      username: 1@1.1
-      password: 1
+  apiScopes: # scopes are "groupings" of protected resources (like tags).
+    - name: api1.read
+    - name: api2.read
+  users: # users are people who can grant access to recourses to apps via scopes
+    - subjectId: user
+      username: user
+      password: 2
